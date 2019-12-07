@@ -1,16 +1,36 @@
 from itertools import permutations
-import intcode
+from intcode import Intcode
 
 def solve(a):
   os = []
   for settings in permutations(range(5)):
-    i = 0
-    for s in settings:
-      ar = a[:]
-      while ar[i] != 99 or ar[i] != 4:
-        ar, i = intcode.read_instruction(a, i, s)
-      if ar[i] == 4:
-        os.append(intcode.value(a, i + 1, a // 100))
+    intcs = [Intcode(a) for _ in range(5)]
+    out = 0
+    for intc, setting in zip(intcs, settings):
+      intc.run([setting, out])
+      out = intc.o
+    os.append(out)
+
   return max(os)
 
-print(solve(list(map(int,open("day7input.txt").read().split(",")))))
+def loop(a):
+  os = []
+  for settings in permutations(range(5)):
+    intcs = [Intcode(a) for _ in range(5)]
+    out = 0
+    for intc, setting in zip(intcs, settings):
+      intc.run([setting, out])
+      out = intc.o
+    while out:
+      for intc in intcs:
+        intc.run([setting, out])
+        out = intc.o
+
+      os.append(out)
+
+  return max(os)
+
+a = list(map(int,open("day7input.txt").read().split(",")))
+print(solve(a))
+print('---')
+print(loop(a))

@@ -1,8 +1,8 @@
 class Intcode:
-  def __init__(self, a, inputs):
+  def __init__(self, a):
     self.a = a[:]
-    self.inputs = inputs
     self.i = 0
+    self.inputs = []
     self.o = None
     self.instructions = {
         1: self.add,
@@ -62,11 +62,11 @@ class Intcode:
     return self.a
 
   def read_instruction(self):
-    opcode = self.get_opcode() % 100
-    st = str(self.get_opcode() // 100)
+    opcode = self.get_opcode()
+    st = str(self.a[self.i] // 100)
     while len(st) < 3:
       st = "0" + st
-    return self.instructions[opcode](list(map(int, reversed(st))))
+    self.instructions[opcode](list(map(int, reversed(st))))
 
   def value(self, i, n):
     if n == 0:
@@ -75,4 +75,11 @@ class Intcode:
       return self.a[i]
 
   def get_opcode(self):
-    return self.a[self.i]
+    return self.a[self.i] % 100
+
+  def run(self, inputs):
+    self.inputs += inputs
+    while True:
+      self.read_instruction()
+      if self.get_opcode() == 99:
+        return None
