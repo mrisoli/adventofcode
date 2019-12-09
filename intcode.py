@@ -7,15 +7,15 @@ class Intcode:
     self.o = None
 
   def add(self, args):
-    self.a[self.a[self.i + 3]] = self.value(self.i + 1, args[0]) + self.value(self.i + 2, args[1])
+    self.a[self.value(self.i + 3, args[2], True)] = self.value(self.i + 1, args[0]) + self.value(self.i + 2, args[1])
     self.i += 4
 
   def multiply(self, args):
-    self.a[self.a[self.i + 3]] = self.value(self.i + 1, args[0]) * self.value(self.i + 2, args[1])
+    self.a[self.value(self.i + 3, args[2], True)] = self.value(self.i + 1, args[0]) * self.value(self.i + 2, args[1])
     self.i += 4
 
-  def modify(self, _args):
-    self.a[self.a[self.i + 1]] = self.inputs.pop(0)
+  def modify(self, args):
+    self.a[self.value(self.i + 1, args[0], True)] = self.inputs.pop(0)
     self.i += 2
 
   def output(self, args):
@@ -54,13 +54,13 @@ class Intcode:
     self.base += self.value(self.i + 1, args[0])
     self.i += 2
 
-  def value(self, i, n):
-    if n == 0:
+  def value(self, i, n, w=False):
+    if n == 0 and not w:
       return self.a[self.a[i]]
-    elif n == 1:
-      return self.a[i]
     elif n == 2:
       return self.a[self.base + self.a[i]]
+    else:
+      return self.a[i]
 
   def get_opcode(self):
     return self.a[self.i] % 100
@@ -86,7 +86,7 @@ class Intcode:
       elif op == 3:
         self.modify(args)
       elif op == 4:
-        self.output(args)
+        return self.output(args)
       elif op == 5:
         self.jump_if_true(args)
       elif op == 6:

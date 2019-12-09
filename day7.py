@@ -7,7 +7,7 @@ def solve(a):
     intcs = [Intcode(a) for _ in range(5)]
     out = 0
     for intc, setting in zip(intcs, settings):
-      intc.run([setting, out])
+      intc.input([setting, out]).run()
       out = intc.o
     os.append(out)
 
@@ -15,18 +15,16 @@ def solve(a):
 
 def loop(a):
   os = []
-  for settings in permutations(range(5)):
+  for settings in permutations(range(5, 10)):
     intcs = [Intcode(a) for _ in range(5)]
     out = 0
     for intc, setting in zip(intcs, settings):
-      intc.run([setting, out])
-      out = intc.o
+      out = intc.input([setting, out]).run()
     while out:
       for intc in intcs:
-        intc.run([setting, out])
-        out = intc.o
-
-      os.append(out)
+        out = intc.input([out]).run()
+      if out:
+        os.append(out)
 
   return max(os)
 
