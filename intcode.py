@@ -7,15 +7,16 @@ class Intcode:
     self.o = None
 
   def add(self, mode):
-    self.a[self.value(self.i + 3, mode[2], True)] = self.value(self.i + 1, mode[0]) + self.value(self.i + 2, mode[1])
+    self.a[self.index(self.i + 3, mode[2], True)] = self.value(self.i + 1, mode[0]) + self.value(self.i + 2, mode[1])
     self.i += 4
 
   def multiply(self, mode):
-    self.a[self.value(self.i + 3, mode[2], True)] = self.value(self.i + 1, mode[0]) * self.value(self.i + 2, mode[1])
+    self.a[self.index(self.i + 3, mode[2], True)] = self.value(self.i + 1, mode[0]) * self.value(self.i + 2, mode[1])
     self.i += 4
 
   def modify(self, mode):
-    self.a[self.value(self.i + 1, mode[0], True)] = self.inputs.pop(0)
+    # import pdb;pdb.set_trace()
+    self.a[self.index(self.i + 1, mode[0], True)] = self.inputs.pop(0)
     self.i += 2
 
   def output(self, mode):
@@ -39,9 +40,9 @@ class Intcode:
 
   def ifc(self, mode, c):
     if c:
-      self.a[self.value(self.i + 3, mode[2], True)] = 1
+      self.a[self.index(self.i + 3, mode[2], True)] = 1
     else:
-      self.a[self.value(self.i + 3, mode[2], True)] = 0
+      self.a[self.index(self.i + 3, mode[2], True)] = 0
     self.i += 4
 
   def less_than(self, mode):
@@ -55,10 +56,13 @@ class Intcode:
     self.i += 2
 
   def value(self, i, n, w=False):
-    if n == 0 and not w:
-      return self.a[self.a[i]]
+    return self.a[self.index(i, n, w)]
+
+  def index(self, i, n, w):
+    if n == 1 and not w:
+      return i
     elif n == 2:
-      return self.a[self.base + self.a[i]]
+      return self.base + self.a[i]
     else:
       return self.a[i]
 
