@@ -1,3 +1,4 @@
+from functools import reduce
 import re
 
 def valid(s):
@@ -6,4 +7,4 @@ def valid(s):
     return [p[l], p[h]].count(c) == 1
 
 with open('puzzle.in') as f:
-        print(len(list(filter(valid, f.readlines()))))
+    print(reduce(lambda t, s: t + (1 if valid(s) else 0), f.readlines(), 0))
