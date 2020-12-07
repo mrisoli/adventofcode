@@ -4,17 +4,17 @@ def count_colors(g, color):
     c = 0
     for v in g.vertices.keys():
         edges = g.vertices[v].get_edge_names()
-        if color in set(edges):
+        if color in edges:
             c += 1
         else:
             visited = set(v)
             q = list.copy(edges)
-            while(len(q) > 0):
+            while q:
                 vv = q.pop()
                 if vv not in visited:
                     visited.add(vv)
                     edges = g.vertices[vv].get_edge_names()
-                    if color in set(edges):
+                    if color in edges:
                         c += 1
                         break
                     q.extend(edges)
