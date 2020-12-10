@@ -7,9 +7,8 @@ with open('puzzle.in', 'r') as f:
     s = set(l)
     a = [0] * (m + 1)
     a[0] = 1
-    for i in range(len(a)):
-        if i in s:
-            for j in range(1,4):
-                if i + j < len(a):
-                    a[i + j] += a[i]
+    for i in l:
+        for j in range(1,4):
+            if i + j < len(a):
+                a[i + j] += a[i]
     print(a[m])
