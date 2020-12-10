@@ -4,6 +4,5 @@ with open('puzzle.in', 'r') as f:
     l.append(l[-1] + 3)
     a = [1] + ([0] * (l[-1] + 4))
     for i in l:
-        for j in range(1,4):
-            a[i + j] += a[i]
+        a[i +1:i + 4] = [x + a[i] for x in a[i +1:i + 4]]
     print(a[l[-1]])
