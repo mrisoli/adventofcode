@@ -1,4 +1,3 @@
-from copy import deepcopy
 from common import seat
 
 def check_direction(m, i, j, di, dj):

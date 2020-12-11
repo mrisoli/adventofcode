@@ -1,4 +1,3 @@
-from copy import deepcopy
 from common import seat
 
 def neighbours(m, i, j):
