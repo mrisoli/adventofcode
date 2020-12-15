@@ -1,7 +1,7 @@
 def solve(total):
     f = open('p.in')
     n = list(map(int, f.read().split(',')))
-    s = {}
+    s = [None] * 50000000
     last = 0
     idx = 1
     for v in n:
@@ -10,7 +10,7 @@ def solve(total):
         idx += 1
     while idx <= total:
         last = s[last]['last'] - s[last]['recent']
-        if last in s:
+        if s[last]:
             s[last] = {'last': idx, 'recent': s[last]['last']}
         else:
             s[last] = {'last': idx, 'recent': idx}
