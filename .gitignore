@@ -1,6 +1,4 @@
 __pycache__/
 *.in
-haskell/*
-!haskell/*.*
-haskell/*.o
-haskell/*.hi
+*.o
+*.hi
