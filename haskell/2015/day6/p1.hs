@@ -2,13 +2,13 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Common
 
-cellTransform :: Switch -> Set Pos -> Pos -> Set Pos
-cellTransform On m p = Set.insert p m
-cellTransform Off m p = Set.delete p m
-cellTransform Toggle m p
+cellTransform :: Transform (Set Pos)
+cellTransform m (On, p) = Set.insert p m
+cellTransform m (Off, p) = Set.delete p m
+cellTransform m (Toggle, p)
     | Set.member p m = Set.delete p m
     | otherwise = Set.insert p m
 
 main = do
     contents <- getContents
-    print $ solve contents Set.empty cellTransform Set.size
+    print $ Set.size $ solve Set.empty cellTransform contents

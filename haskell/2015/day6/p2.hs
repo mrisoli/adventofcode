@@ -16,11 +16,11 @@ setCell On = 1
 setCell Off = 0
 setCell Toggle = 2
 
-cellTransform :: Switch -> Map Pos Int -> Pos -> Map Pos Int
-cellTransform s m p
+cellTransform :: Transform (Map Pos Int)
+cellTransform m (s, p)
     | Map.member p m = Map.adjust (updateCell s) p m
     | otherwise = Map.insert p (setCell s) m
 
 main = do
     contents <- getContents
-    print $ solve contents Map.empty cellTransform (sum . Map.elems)
+    print $ sum $ Map.elems $ solve Map.empty cellTransform contents

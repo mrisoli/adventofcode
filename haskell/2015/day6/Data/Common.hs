@@ -1,16 +1,19 @@
 module Data.Common
 ( Pos
 , Switch (On, Off, Toggle)
+, Transform
 , solve
 ) where
 
 import Text.Regex.Posix
 import Data.Ix
 
+type Transform a = (a -> CellToggle -> a)
 type Pos = (Int, Int)
+type CellToggle = (Switch, Pos)
 
-data Switch = On | Off | Toggle deriving(Show)
-data Command = Command Switch [Pos] deriving(Show)
+data Switch = On | Off | Toggle
+data Command = Command Switch [Pos]
 
 getSwitch :: [Char] -> Switch
 getSwitch "turn off" = Off
@@ -18,7 +21,7 @@ getSwitch "turn on" = On
 getSwitch "toggle" = Toggle
 
 getTuple :: [Char] -> Pos
-getTuple s = read ("(" ++ s ++ ")") ::(Pos)
+getTuple s = read ("(" ++ s ++ ")") ::Pos
 
 getRange :: [Char] -> [Char] -> [Pos]
 getRange x y =
@@ -32,8 +35,11 @@ mkCommand s = do
 getCommands :: [Char] -> [Command]
 getCommands s = map mkCommand (lines s)
 
-transform :: (Switch -> a -> Pos -> a) -> a -> Command -> a
-transform fn m (Command s p) = foldl (fn s) m p
+getToggles :: Command -> [CellToggle]
+getToggles (Command c ps) = map (\x -> (c, x)) ps
 
-solve :: [Char] -> a -> (Switch -> a -> Pos -> a) -> (a -> Int) -> Int
-solve c a fn count = count $ foldl (transform fn) a (getCommands c)
+transform :: Transform a -> a -> Command -> a
+transform fn m c = foldl fn m (getToggles c)
+
+solve :: a -> Transform a -> [Char] -> a
+solve a fn c = foldl (transform fn) a (getCommands c)
