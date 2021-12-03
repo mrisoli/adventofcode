@@ -14,3 +14,5 @@ def get_cmd(s):
 def cmd_list(n):
     return [*map(get_cmd, open(get_path(n)))]
 
+def str_list(n):
+    return [*map(str.strip, open(get_path(n)))]
