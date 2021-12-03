@@ -3,20 +3,13 @@ from collections import Counter
 
 l = str_list(3)
 
-def rt(o, ty):
-    s = 0 if ty == '1' else 1
+def r(o, ty):
+    s = '1' if ty == 0 else '0'
     for i in range(len(l[0])):
-        tt = [list(r) for r in zip(*o)]
-        n = tt[i]
-        c = Counter(n)
-        mc = c.most_common(2)
-        if mc[0][1] == mc[1][1]:
-            o = [f for f in o if f[i] == ty]
-        else:
-            o = [f for f in o if f[i] == mc[s][0]]
+        m = Counter([r for r in zip(*o)][i]).most_common(2)
+        e = s if m[0][1] == m[1][1] else m[ty][0]
+        o = [f for f in o if f[i] == e]
         if len(o) == 1:
-            o = int(o[0],2)
-            break
-    return o
+            return int(o[0],2)
 
-print(rt(l[:], '1') * rt(l[:], '0'))
+print(r(l[:], 0) * r(l[:], 1))
