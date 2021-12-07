@@ -7,6 +7,9 @@ def get_path(n):
 def int_list(n):
     return [*map(int, fopen(n))]
 
+def int_row(n):
+    return [*map(int, fopen(n).readline().split(','))]
+
 def get_cmd(s):
     (c, d) = s.split(' ')
     return (c, int(d))
