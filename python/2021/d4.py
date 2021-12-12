@@ -39,13 +39,11 @@ class Board:
 
     def mark_cards(self, n):
         l = []
-        for i in self.cards.keys():
-            card = self.cards[i]
+        for i,card in self.cards.items():
             if card.mark(n):
                 l.append(i)
         if len(l) > 0:
-            for i in l:
-                card = self.cards[i]
+            for i,card in enumerate(l):
                 del self.cards[i]
             return card
         return None

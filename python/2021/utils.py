@@ -1,14 +1,21 @@
 import sys
 
 def get_path(n):
-    t = 't' if len(sys.argv) > 1 else 'i'
-    return 'inputs/' + t + str(n) + '.in'
+    t,v = 'i',''
+    if len(sys.argv) > 1:
+        t = 't'
+        if sys.argv[1].isnumeric():
+            v = '-' + sys.argv[1]
+    return 'inputs/' + t + str(n) + v + '.in'
 
 def int_list(n):
     return [*map(int, fopen(n))]
 
 def int_row(n):
     return [*map(int, fopen(n).readline().split(','))]
+
+def int_grid(n):
+    return [[int(c) for c in l.strip()] for l in fopen(n).readlines()]
 
 def get_cmd(s):
     (c, d) = s.split(' ')
