@@ -9,4 +9,4 @@ calc [w, l, h] =
 
 main = do
     contents <- getContents
-    putStrLn $ (solve calc) $ contents
+    putStrLn $ solve calc contents
