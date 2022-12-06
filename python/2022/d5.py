@@ -1,12 +1,12 @@
 import re
+from itertools import zip_longest
 from utils import fopen
 
 def cmds_and_stacks():
-    diagram, cmds = [s.split('\n') for s in fopen(5).read().split('\n\n')]
+    d, cmds = [s.split('\n') for s in fopen(5).read().split('\n\n')]
     cmds = [tuple(map(int, re.findall(r'\d+', x))) for x in cmds if x]
-    st = [[] for i in range(int(diagram[-1][-1]) + 1)]
-    b = dict([(i, int(v)) for i,v in enumerate(diagram[-1]) if v.isdigit()])
-    [[st[b[i]].append(c) for i,c in enumerate(v) if c.isalpha()] for v in reversed(diagram[:-1])]
+    t = list(filter(lambda x: str(x[0]).isdigit(), map(list, zip_longest(*[*reversed(d)]))))
+    st = [[]] + [[v for v in x[1:] if str(v or '').isalpha()] for x in t]
     return (cmds, st)
 
 def answer(s):
