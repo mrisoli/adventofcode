@@ -1,3 +1,3 @@
 from d6 import solve
 
-solve(14)
+print(solve(14))
