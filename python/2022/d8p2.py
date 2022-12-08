@@ -1,10 +1,9 @@
 from math import prod
-from utils import fopen
-from d8 import Point,get_grid, yield_points
+from d8 import Point,Grid
 
 class PointSight(Point):
     def sight(self):
-        return prod([self.top(), self.bottom(), self.right(), self.left()])
+        return prod(self.get_predicates())
 
     def checkfn(self, rn):
         t = 0
@@ -14,5 +13,5 @@ class PointSight(Point):
                 break
         return t
 
-g = get_grid()
-print(max([PointSight(g, i, j).sight() for (i, j) in yield_points(g)]))
+g = Grid()
+print(max([PointSight(g, i, j).sight() for (i, j) in g.yield_points()]))
