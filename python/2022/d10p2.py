@@ -1,0 +1,20 @@
+from utils import str_list
+
+f = str_list(10)
+
+s = []
+x,i = 1,None
+for c in range(1,241):
+    if not i:
+        l = f.pop(0)
+        if l.startswith('addx'):
+            i = (c + 1, int(l.split(' ')[1]))
+
+    s.append('#' if (c - 1) % 40 in range(x - 1, x + 2) else '.')
+    if c % 40 == 0:
+        s.append('\n')
+    if i and i[0] == c:
+        x += i[1]
+        i = None
+
+print(''.join(s))
