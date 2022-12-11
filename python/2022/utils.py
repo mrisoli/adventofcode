@@ -29,3 +29,6 @@ def str_list(n):
 
 def fopen(n):
     return open(get_path(n))
+
+def obj_list(n):
+    return fopen(n).read().split('\n\n')
