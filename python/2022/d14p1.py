@@ -1,22 +1,18 @@
-from d14 import make_grid,get_floor
+from d14 import make_grid
 
-g = make_grid()
-floor = get_floor(g)
-nf = floor
+g,f = make_grid()
 c, r = 0,len(g)
-
-while nf == floor:
-    pos = (500,0)
+while not c:
+    p = (500,0)
     while True:
-        if pos[1] > floor:
+        if p[1] > f:
             if not c: c = len(g)
             break
-        for dest in [(pos[0], pos[1] + 1), (pos[0] - 1, pos[1] + 1), (pos[0] + 1, pos[1] + 1)]:
-            if dest not in g:
-                pos = dest
+        for d in [(p[0], p[1] + 1), (p[0] - 1, p[1] + 1), (p[0] + 1, p[1] + 1)]:
+            if d not in g:
+                p = d
                 break
         else: break
-    g.add(pos)
-    nf = get_floor(g)
+    g.add(p)
 
 print(c - r)
