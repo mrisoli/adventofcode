@@ -17,6 +17,9 @@ def int_row(n):
 def int_grid(n):
     return [[int(c) for c in l.strip()] for l in fopen(n).readlines()]
 
+def int_tuples(n):
+    return {tuple(map(int, l.split(','))) for l in str_list(n)}
+
 def get_cmd(s):
     (c, d) = s.split(' ')
     return (c, int(d))
