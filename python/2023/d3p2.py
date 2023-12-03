@@ -1,21 +1,6 @@
-import re
-from utils import str_list
-from d3 import generate, is_valid
+from collections import defaultdict
+from d3 import generate
 
-def mul(vals):
-    if len(vals) != 2:
-        return 0
-    return vals[0] * vals[1]
-
-def solve():
-    nums, symbols = generate(r'[*]')
-    gears = {}
-    for c,n in nums.items():
-        t = is_valid(c,symbols)
-        if t is not None:
-            if t not in gears:
-                gears[t] = []
-            gears[t].append(n)
-    return sum(map(mul, gears.values()))
-
-print(solve())
+gears = defaultdict(list)
+[gears[t].append(n) for t,n in generate(r'[*]')]
+print(sum(x[0] * x[1] for x in gears.values() if len(x) == 2))
