@@ -1,4 +1,4 @@
-from operator import attrgetter
+from operator import itemgetter
 from utils import obj_list
 
 ORDER = ['soil', 'fertilizer', 'water', 'light', 'temperature','humidity', 'location']
@@ -16,12 +16,6 @@ class Pairing:
         offset = value - self.source
         return self.destination + offset
 
-
-class Seed:
-    def __init__(self, value):
-        self.value = value
-        for name in ORDER:
-            setattr(self, name, 0)
 
 class Maps:
     def __init__(self, m):
@@ -49,22 +43,22 @@ class LocationFinder:
     def __init__(self, rn=1):
         seeds, *maps = obj_list(5)
         seeding = seeds.split(' ')[1:]
-        self.seeds = [*map(Seed, map(int, seeding))]
+        self.seeds = dict([(int(i), {}) for i in seeding])
         self.maps = Maps(maps)
 
     def parse_seeds(self):
-        for seed in self.seeds:
-            c = seed.value
+        for n,seed in self.seeds.items():
+            c = n
             for name in ORDER:
                 for pl in self.maps.get_ranges(name):
                     if pl.contains(c):
                         c = pl.offset(c)
-                        setattr(seed, name, c)
+                        self.seeds[n][name] = c
                         break
-                if not attrgetter(name)(seed):
-                    setattr(seed, name, c)
+                if name not in self.seeds[n]:
+                    self.seeds[n][name] = c
 
 
     def get_location(self):
         self.parse_seeds()
-        return min(map(attrgetter('location'), self.seeds))
+        return min(map(itemgetter('location'), self.seeds.values()))
