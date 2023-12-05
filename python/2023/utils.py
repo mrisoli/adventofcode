@@ -34,7 +34,7 @@ def fopen(n):
     return open(get_path(n))
 
 def obj_list(n):
-    return fopen(n).read().split('\n\n')
+    return [*map(str.strip, fopen(n).read().split('\n\n'))]
 
 def coords(n, tokens=None):
     return {complex(i,j) for i,r in enumerate(str_list(n)) for j,x in enumerate(r) if not tokens or x in tokens}
