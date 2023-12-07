@@ -22,9 +22,7 @@ class Pairing:
         min_x, max_x = x
         min_y, max_y = self.source_range()
         match = (max(min_x,min_y), min(max_x, max_y))
-        solution = self.transform(match) if match[0] < match[1] else None
-        leftover = self.get_leftover(x, match) if solution else set([x])
-        return solution, leftover
+        return match
 
 
 class Maps:
@@ -65,10 +63,12 @@ class LocationFinder:
             for r in ranges:
                 new_paths = set()
                 for c in paths:
-                    sl,lo = r.get_intersection(c)
-                    if sl:
-                        matches.add(sl)
-                    new_paths = new_paths.union(lo)
+                    sl = r.get_intersection(c)
+                    if sl[0] < sl[1]:
+                        matches.add(r.transform(sl))
+                        new_paths = new_paths.union(r.get_leftover(c, sl))
+                    else:
+                        new_paths.add(c)
                 paths = new_paths
             paths = matches.union(new_paths)
         return paths
