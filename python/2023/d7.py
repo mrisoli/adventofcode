@@ -16,10 +16,7 @@ class Hand:
         mc = c.most_common(1)
         if len(mc) == 0:
             return Counter(h)
-        mc = mc[0][0]
-        h = h.replace('J', mc)
-        c = Counter(h)
-        return c
+        return Counter(h.replace('J', mc[0][0]))
 
     def hand_rank(self, jokers):
         c = self.joker_hand() if jokers else Counter(self.cards)
@@ -56,7 +53,6 @@ class CamelCards:
         self.hands = sorted(self.hands, key=cmp_to_key(self.rank))
 
     def winnings(self):
-        #print([h.cards for h in self.hands])
         return sum([h.v * (i + 1) for i,h in enumerate(self.hands)])
 
     def rank(self, a, b):
