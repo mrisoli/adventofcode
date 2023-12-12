@@ -1,5 +1,5 @@
 from utils import str_list
-from d12 import parse_line
+from d12 import parse_line,place
 
 def expand(l):
     s,c = l
@@ -7,4 +7,4 @@ def expand(l):
     c = 5 * c
     return s,c
 
-print(list(map(expand, map(parse_line, str_list(12)))))
+print(sum([place(s,c) for s,c in map(expand, map(parse_line, str_list(12)))]))
