@@ -1,20 +1,16 @@
 from utils import str_list, coords
 
 class Grid:
-    def __init__(self, beams):
+    def __init__(self):
         s = str_list(16)
         self.z = coords(s, '/\|-')
         self.mr = len(s[0])
         self.mc = len(s)
-        self.energized = set()
-        self.beams = beams
 
     def move_beam(self, b):
         d,p = b
         beams = []
         while p.real in range(self.mr) and p.imag in range(self.mc):
-            if (d,p) in self.energized:
-                return beams
             self.energized.add(tuple([d,p]))
             if p in self.z:
                 if self.z[p] == '/':
@@ -30,17 +26,13 @@ class Grid:
             p += d
         return beams
 
-    def set_beams(self, beams):
-        self.beams = beams
-        return self
-
-    def run(self):
+    def run(self, beams):
         v = set()
         self.energized = set()
-        while self.beams:
-            b = self.beams.pop(0)
+        while beams:
+            b = beams.pop(0)
             v.add(b)
-            new_beams = self.move_beam(b)
-            self.beams += [b for b in new_beams if b not in v]
-        self.energized = set(p for _,p in self.energized)
-        return len(self.energized)
+            if b not in self.energized:
+                nb = self.move_beam(b)
+                beams += [b for b in nb if b not in v]
+        return len(set(p for _,p in self.energized))

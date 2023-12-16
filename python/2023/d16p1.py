@@ -1,4 +1,4 @@
 from d16 import Grid
 
-g = Grid([(1j, 0)])
-print(g.run())
+g = Grid()
+print(g.run([(1j, 0)]))
