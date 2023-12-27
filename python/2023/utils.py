@@ -41,10 +41,12 @@ def fopen(n):
 def obj_list(n):
     return [*map(str.strip, fopen(n).read().split('\n\n'))]
 
-def coords(n, tokens=None):
+def coords(n, tokens=None, parse=None):
+    if not parse:
+        parse = lambda x: x
     if isinstance(n, int):
         n = str_list(n)
-    return dict([(complex(i,j),x) for i,r in enumerate(n) for j,x in enumerate(r) if not tokens or x in tokens])
+    return dict([(complex(i,j),parse(x)) for i,r in enumerate(n) for j,x in enumerate(r) if not tokens or x in tokens])
 
 
 def hash_dict(func):
