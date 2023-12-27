@@ -30,8 +30,8 @@ class Solver:
     def __init__(self, mn: int, mx: int):
         self.g = coords(17, ''.join(map(str, range(10))), lambda x: int(x))
         self.target = max(self.g.keys(), key=lambda x: size(x))
-        self.mn = mn
-        self.mx = mx
+        self.min = mn
+        self.max = mx
 
     def djikstra(self) -> int:
         q: list[State] = [
@@ -41,17 +41,20 @@ class Solver:
         v = set()
         while q:
             u = heappop(q)
-            cost, pos, dr = u
-            if pos.val == self.target and size(dr) >= self.mn:
+            cost, pos, direction = u
+            if pos.val == self.target and size(direction) >= self.min:
                 return cost
-            if (pos.val, dr) in v:
+            if (pos.val, direction) in v:
                 continue
-            v.add((pos.val, dr))
-            ss = vector(dr.imag + (1j * dr.real))
-            ss = [-ss, ss]
-            ss.append(dr + vector(dr))
-            for vs in ss:
-                ps = pos.val + vector(vs)
-                sz = size(vs)
-                if ps in self.g and sz <= self.mx:
-                    heappush(q, (cost + self.g[ps], Vertex(ps), vs))
+            v.add((pos.val, direction))
+            turn = vector(direction.imag + (1j * direction.real))
+            ps = pos.val - turn
+            if ps in self.g and size(direction) >= self.min:
+                heappush(q, (cost + self.g[ps], Vertex(ps), -turn))
+            ps = pos.val + turn
+            if ps in self.g and size(direction) >= self.min:
+                heappush(q, (cost + self.g[ps], Vertex(ps), turn))
+            ps = pos.val + vector(direction)
+            step_forward = direction + vector(direction)
+            if ps in self.g and size(step_forward) <= self.max:
+                heappush(q, (cost + self.g[ps], Vertex(ps), step_forward))
