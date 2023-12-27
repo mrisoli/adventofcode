@@ -64,3 +64,10 @@ def hash_dict(func):
         kwargs = {k: HDict(v) if isinstance(v, dict) else v for k, v in kwargs.items()}
         return func(*args, **kwargs)
     return wrapped
+
+def det(a, b):
+    return a.real * b.imag - a.imag * b.real
+
+def polygon_area(p):
+    area = abs(sum([det(a,b) for a,b in zip(p, p[1:] +[p[0]])]))
+    return  int(((area - len(p))/2) + 1)

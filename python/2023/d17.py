@@ -14,12 +14,6 @@ class Vertex:
     def __init__(self, val: complex):
         self.val = val
 
-    def __get__(self):
-        return self.val
-
-    def __set__(self, val):
-        self.val = val
-
     def __repr__(self):
         return f'{(int(self.val.real), int(self.val.imag))}'
 
