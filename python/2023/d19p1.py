@@ -1,23 +1,21 @@
 import re
-from d19 import gen_workflows, Workflow
+from d19 import Parts, Solver
 from utils import obj_list
 
+def sum_parts(parts: Parts) -> int:
+    return parts.x[0] + parts.m[0] + parts.a[0] + parts.s[0]
+
 def gen_parts(parts: str) -> [[str]]:
-    return [[*map(int, re.findall(r'\d+', p))] for p in parts.split('\n')]
+    parts = list(map(int, re.findall(r'\d+', parts)))
+    x,m,a,s = parts
+    return Parts(
+        x=range(x, x+1),
+        m=range(m, m+1),
+        a=range(a, a+1),
+        s=range(s, s+1),
+    )
 
-def check(part: [str], workflows: Workflow) -> bool:
-    x,m,a,s = part
-    c = 'in'
-    while True:
-        for v,t in workflows[c]:
-            if eval(v):
-                if t == 'A':
-                    return True
-                if t == 'R':
-                    return False
-                c = t
-                break
+rules,parts = obj_list(19)
+s = Solver(rules)
 
-w,p = obj_list(19)
-w = gen_workflows(w)
-print(sum(map(sum, ([p for p in gen_parts(p) if check(p, w)]))))
+print(sum(map(sum_parts, filter(lambda p: s.solve(p, 'in'), map(gen_parts, parts.split('\n'))))))
