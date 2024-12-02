@@ -10,4 +10,4 @@ def safe(r):
                 return True
     return False
 
-print(sum(map(safe, rows_of_int(2)))
+print(sum(map(safe, rows_of_int(2))))

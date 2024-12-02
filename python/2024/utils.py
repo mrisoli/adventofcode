@@ -3,12 +3,13 @@ import sys
 import re
 
 def get_path(n):
-    t,v = 'i',''
+    v = ''
+    ext = '.in'
     if len(sys.argv) > 1:
-        t = 't'
+        ext ='.test'
         if sys.argv[1].isnumeric():
             v = '-' + sys.argv[1]
-    return 'inputs/' + t + str(n) + v + '.in'
+    return 'inputs/' + 'day' + str(n) + v + ext
 
 def int_list(n):
     return [*map(int, fopen(n))]
