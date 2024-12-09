@@ -1,4 +1,3 @@
-from utils import obj_list
 from d5 import RuleChecker
 
 r = RuleChecker()
