@@ -10,11 +10,10 @@ def rule(n):
     return [n * 2024]
 
 @lru_cache(maxsize=None)
-def rectransform(n, i):
-    if i == 0:
+def rectransform(i, n):
+    if n == 0:
         return 1
-    return sum([rectransform(r, i-1) for r in rule(n)])
+    return sum([rectransform(r, n-1) for r in rule(i)])
 
 def recsolve(n):
-    f = int_row(11, separator=' ')
-    print(sum([rectransform(i, n) for i in f]))
+    print(sum([rectransform(i, n) for i in int_row(11, separator=' ')]))
