@@ -49,6 +49,10 @@ def coords(n, tokens=None, parse=None, regex=None):
         n = str_list(n)
     return dict([(complex(i,j),parse(x)) for i,r in enumerate(n) for j,x in enumerate(r) if not tokens or x in tokens or (regex is not None and re.match(regex, x))])
 
+def points_list(n):
+    n = str_list(n)
+    return [complex(v.replace(',','+')+'j') for v in n]
+
 
 def hash_dict(func):
     """Transform mutable dictionnary
